@@ -1,4 +1,7 @@
 const { app, BrowserWindow } = require('electron');
+const { listModules } = require('./module/loader');
+
+const modules = listModules();
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -11,7 +14,9 @@ function createWindow() {
   win.loadURL('https://music.youtube.com');
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+  await Promise.all(modules.map(async (m) => m.load()));
+
   createWindow();
 
   // someshit with macos lol
