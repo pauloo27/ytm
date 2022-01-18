@@ -12,11 +12,10 @@ function createWindow() {
 
   win.setMenuBarVisibility(false);
   win.loadURL('https://music.youtube.com');
+  modules.forEach(async (m) => m.load(win));
 }
 
-app.whenReady().then(async () => {
-  await Promise.all(modules.map(async (m) => m.load()));
-
+app.whenReady().then(() => {
   createWindow();
 
   // someshit with macos lol
