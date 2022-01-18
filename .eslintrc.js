@@ -12,5 +12,12 @@ module.exports = {
   },
   rules: {
     'class-methods-use-this': 'off',
+    quotes: [
+      'error',
+      'single',
+      {
+        allowTemplateLiterals: true,
+      },
+    ],
   },
 };
