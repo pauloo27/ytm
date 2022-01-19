@@ -12,7 +12,8 @@
   "author": "not google",
   "license": "MIT",
   "dependencies": {
-    "electron": "^16.0.7"
+    "electron": "^16.0.7",
+    "express": "^4.17.2"
   },
   "devDependencies": {
     "electron": "^16.0.7",

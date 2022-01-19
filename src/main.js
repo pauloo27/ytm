@@ -1,7 +1,10 @@
 const { app, BrowserWindow } = require('electron');
 const { listModules } = require('./module/loader');
+const server = require('./core/server/server');
 
 const modules = listModules();
+
+server.start();
 
 function createWindow() {
   const win = new BrowserWindow({
