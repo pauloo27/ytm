@@ -13,7 +13,8 @@
   "license": "MIT",
   "dependencies": {
     "electron": "^16.0.7",
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "ws": "^8.4.2"
   },
   "devDependencies": {
     "electron": "^16.0.7",
