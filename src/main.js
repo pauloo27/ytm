@@ -12,6 +12,8 @@ function createWindow() {
     // TODO find out whats the cool resolution with the cool kids
     width: 800,
     height: 600,
+    closable: true,
+    center: true,
     webPreferences: {
       // some nice options =)
       webSecurity: true,
@@ -24,6 +26,9 @@ function createWindow() {
     },
   });
 
+  win.webContents.on('will-prevent-unload', (event) => {
+    event.preventDefault();
+  });
   win.setMenuBarVisibility(false);
   win.loadURL('https://music.youtube.com');
   modules.forEach(async (m) => m.load(win));
@@ -41,7 +46,6 @@ app.whenReady().then(() => {
 });
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+  if (process.platform === 'darwin') return;
+  app.quit();
 });
