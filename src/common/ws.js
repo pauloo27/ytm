@@ -4,4 +4,4 @@ function sendCommand(command, value) {
 
 module.exports = {
   sendCommand,
-}
+};
