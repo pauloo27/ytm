@@ -1,4 +1,8 @@
-const { Server } = require('ws');
+const { WebSocket, Server } = require('ws');
+const { sendCommand } = require('../../common/ws');
+
+// inject a "send command" function to ws
+WebSocket.constructor.prototype.sendCommand = sendCommand;
 
 function startWS() {
   const wss = new Server({ noServer: true });
