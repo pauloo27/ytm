@@ -1,6 +1,8 @@
+const { listenToChanges } = require('./listener');
+
 // Getters
 function isPlaying() {
-  return document.getElementsByClassName('byline ytmusic-player-bar').length !== 0;
+  return document.querySelector('.byline.ytmusic-player-bar') !== null;
 }
 
 function isPaused() {
@@ -12,7 +14,7 @@ function isVideo() {
 }
 
 function getVolume() {
-  return document.querySelector('#volume-slider').getAttribute('value');
+  return Number.parseInt(document.querySelector('#volume-slider').getAttribute('value'), 10);
 }
 
 function getTitle() {
@@ -20,7 +22,7 @@ function getTitle() {
 }
 
 function getDuration() {
-  return document.querySelector('#progress-bar').getAttribute('aria-valuemax');
+  return Number.parseInt(document.querySelector('#progress-bar').getAttribute('aria-valuemax'), 10);
 }
 
 function getPosition() {
@@ -86,8 +88,15 @@ function setSeekbarPosition(positionInSeconds) {
   sliderKnob.setAttribute('value', positionInSeconds);
 }
 
+let listening = false;
+
 function getFullState() {
-  return {
+  if (!listening) {
+    listenToChanges();
+    listening = true;
+  }
+
+  const state = {
     isPlaying: isPlaying(),
     isPaused: isPaused(),
     isVideo: isVideo(),
@@ -102,6 +111,7 @@ function getFullState() {
     albumName: getAlbumName(),
     likeStatus: getLikeStatus(),
   };
+  return state;
 }
 
 module.exports = {
