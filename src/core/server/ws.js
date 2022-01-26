@@ -1,13 +1,21 @@
-const { WebSocket, Server } = require('ws');
+const { Server } = require('ws');
 const { sendCommand } = require('../../common/ws');
+const { initState } = require('../state/state');
 
-// inject a "send command" function to ws
-WebSocket.constructor.prototype.sendCommand = sendCommand;
+function handleCommand(socket, rawData) {
+  const data = JSON.parse(rawData);
+  if (!data || !data.command) return;
+  if (data.command === 'i-am-ready') socket.sendCommand('get-full-state');
+  if (data.command === 'update-state') initState(data.value);
+}
 
 function startWS() {
   const wss = new Server({ noServer: true });
   wss.on('connection', (socket) => {
-    // TODO:
+    // inject a "send command" function to ws. TODO: inject only once?
+    // eslint-disable-next-line no-param-reassign
+    socket.constructor.prototype.sendCommand = sendCommand;
+    socket.on('message', (rawData) => handleCommand(socket, rawData));
   });
   return wss;
 }

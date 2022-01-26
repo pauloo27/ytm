@@ -1,6 +1,6 @@
 // Getters
-function getVolume() {
-  return document.querySelector('#volume-slider').getAttribute('value');
+function isPlaying() {
+  return document.getElementsByClassName('byline ytmusic-player-bar').length !== 0;
 }
 
 function isPaused() {
@@ -11,6 +11,10 @@ function isVideo() {
   return document.querySelector('#player').hasAttribute('video-mode_');
 }
 
+function getVolume() {
+  return document.querySelector('#volume-slider').getAttribute('value');
+}
+
 function getTitle() {
   return document.querySelector('.title.ytmusic-player-bar').textContent;
 }
@@ -19,7 +23,7 @@ function getDuration() {
   return document.querySelector('#progress-bar').getAttribute('aria-valuemax');
 }
 
-function getSeekbarPosition() {
+function getPosition() {
   return document.querySelector('#progress-bar').getAttribute('aria-valuenow');
 }
 
@@ -42,17 +46,25 @@ function getCover() {
 }
 
 function getAlbumName() {
+  if (!isPlaying()) return undefined;
   const playerBar = document.getElementsByClassName('byline ytmusic-player-bar')[0].children;
   const playerBarArr = Array.from(playerBar);
 
-  let album;
-  playerBarArr.forEach((data) => {
-    if (data.getAttribute('href') != null && data.getAttribute('href').includes('browse')) {
-      album = data.innerText;
-    }
-  });
+  const d = playerBarArr.find((data) => data.hasAttribute('href') && data.getAttribute('href').includes('browse'));
+  return d.innerText;
+}
 
-  return album;
+function getAuthor() {
+  const bar = document.getElementsByClassName('subtitle ytmusic-player-bar')[0];
+
+  if (bar.getElementsByClassName('yt-simple-endpoint yt-formatted-string')[0]) {
+    return bar.getElementsByClassName('yt-simple-endpoint yt-formatted-string')[0].textContent;
+  }
+
+  if (bar.getElementsByClassName('byline ytmusic-player-bar')[0]) {
+    return bar.getElementsByClassName('byline ytmusic-player-bar')[0].textContent;
+  }
+  return undefined;
 }
 
 // TODO: enum?
@@ -74,18 +86,39 @@ function setSeekbarPosition(positionInSeconds) {
   sliderKnob.setAttribute('value', positionInSeconds);
 }
 
+function getFullState() {
+  return {
+    isPlaying: isPlaying(),
+    isPaused: isPaused(),
+    isVideo: isVideo(),
+    volume: getVolume(),
+    title: getTitle(),
+    author: getAuthor(),
+    duration: getDuration(),
+    position: getPosition(),
+    url: getUrl(),
+    loopType: getLoopType(),
+    cover: getCover(),
+    albumName: getAlbumName(),
+    likeStatus: getLikeStatus(),
+  };
+}
+
 module.exports = {
-  setVolume,
-  getVolume,
+  isPlaying,
   isPaused,
   isVideo,
+  getVolume,
   getTitle,
+  getAuthor,
   getDuration,
-  getSeekbarPosition,
+  getPosition,
   getUrl,
   getLoopType,
   getCover,
   getAlbumName,
   getLikeStatus,
   setSeekbarPosition,
+  setVolume,
+  getFullState,
 };
