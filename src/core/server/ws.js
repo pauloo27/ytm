@@ -1,12 +1,15 @@
 const { Server } = require('ws');
 const { sendCommand } = require('../../common/ws');
-const { initState } = require('../state/state');
+const { isStateInitialized, initState, updateState } = require('../state/state');
 
 function handleCommand(socket, rawData) {
   const data = JSON.parse(rawData);
   if (!data || !data.command) return;
   if (data.command === 'i-am-ready') socket.sendCommand('get-full-state');
-  if (data.command === 'update-state') initState(data.value);
+  if (data.command === 'update-state') {
+    if (!isStateInitialized()) initState(data.value);
+    else updateState(data.value);
+  }
 }
 
 function startWS() {
