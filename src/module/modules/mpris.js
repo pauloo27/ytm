@@ -14,7 +14,7 @@ function load() {
     supportedInterfaces: ['player'],
     // canRaise: true, FIXME
   });
-  player.getPosition = () => State.getFromState('position');
+  player.getPosition = () => State.getFromState('position') * 1000000;
 
   const updatePlayer = (state) => {
     player.volume = state.volume / 100;
