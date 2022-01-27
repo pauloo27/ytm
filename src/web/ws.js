@@ -22,7 +22,7 @@ function handleCommand(socket, rawData) {
   if (!command) return;
   const response = command(data.value);
   if (!response) return;
-  socket.sendCommand('update-state', { command: data.command, value: response });
+  socket.sendCommand('update-state', response);
 }
 
 function connect() {

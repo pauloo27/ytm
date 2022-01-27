@@ -7,8 +7,8 @@ function handleCommand(socket, rawData) {
   if (!data || !data.command) return;
   if (data.command === 'i-am-ready') socket.sendCommand('get-full-state');
   if (data.command === 'update-state') {
-    if (!isStateInitialized()) initState(data.value);
-    else updateState(data.value);
+    if (isStateInitialized()) updateState(data.value);
+    else if (Object.keys(data.value).length > 1) initState(data.value);
   }
 }
 

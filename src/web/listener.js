@@ -121,9 +121,9 @@ function handleAuthor(cb) {
   });
 }
 
-function handleCover(cb) {
+function handleCoverUrl(cb) {
   events.on('title', () => {
-    cb('cover', Controller.getCover());
+    cb('coverUrl', Controller.getCover());
   });
 }
 
@@ -149,7 +149,7 @@ function listenToChanges() {
   handlePosition(cb);
   handleUrl(cb);
   handleLoopType(cb);
-  handleCover(cb);
+  handleCoverUrl(cb);
   handleAlbumName(cb);
   handleLikeStatus(cb);
 }

@@ -38,7 +38,7 @@ function getLoopType() {
   return document.querySelector('ytmusic-player-bar').getAttribute('repeat-mode_');
 }
 
-function getCover() {
+function getCoverUrl() {
   const thumbnail = document.querySelector('.thumbnail.ytmusic-player.no-transition');
   const image = thumbnail.querySelector('.yt-img-shadow').src;
 
@@ -91,11 +91,6 @@ function setSeekbarPosition(positionInSeconds) {
 let listening = false;
 
 function getFullState() {
-  if (!listening) {
-    listenToChanges();
-    listening = true;
-  }
-
   const state = {
     isPlaying: isPlaying(),
     isPaused: isPaused(),
@@ -107,10 +102,14 @@ function getFullState() {
     position: getPosition(),
     url: getUrl(),
     loopType: getLoopType(),
-    cover: getCover(),
+    coverUrl: getCoverUrl(),
     albumName: getAlbumName(),
     likeStatus: getLikeStatus(),
   };
+  if (!listening) {
+    listenToChanges();
+    listening = true;
+  }
   return state;
 }
 
@@ -125,7 +124,7 @@ module.exports = {
   getPosition,
   getUrl,
   getLoopType,
-  getCover,
+  getCoverUrl,
   getAlbumName,
   getLikeStatus,
   setSeekbarPosition,
