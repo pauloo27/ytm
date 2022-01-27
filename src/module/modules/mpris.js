@@ -6,7 +6,7 @@ function preLoad() {
   app.commandLine.appendSwitch('disable-features', 'MediaSessionService');
 }
 
-function load() {
+function postLoad(socket) {
   if (process.platform !== 'linux') {
     return;
   }
@@ -16,9 +16,17 @@ function load() {
     supportedUriSchemes: ['file'],
     supportedMimeTypes: ['audio/mpeg', 'application/ogg'],
     supportedInterfaces: ['player'],
-    // canRaise: true, FIXME
+    // canRaise: true, TODO
   });
+
   player.getPosition = () => State.getFromState('position') * 1000000;
+
+  player.on('play', () => socket.sendCommand('play-pause'));
+  player.on('pause', () => socket.sendCommand('play-pause'));
+  player.on('playpause', () => socket.sendCommand('play-pause'));
+
+  player.on('next', () => socket.sendCommand('next-track'));
+  player.on('previous', () => socket.sendCommand('prev-track'));
 
   const updatePlayer = (state) => {
     player.volume = state.volume / 100;
@@ -41,5 +49,5 @@ function load() {
 module.exports = {
   name: 'MPRIS',
   preLoad,
-  load,
+  postLoad,
 };
