@@ -108,6 +108,18 @@ function getFullState() {
   return state;
 }
 
+function playPause() {
+  document.dispatchEvent(new KeyboardEvent('keydown', { key: ';' }));
+}
+
+function prevTrack() {
+  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k' }));
+}
+
+function nextTrack() {
+  document.dispatchEvent(new KeyboardEvent('keydown', { key: 'j' }));
+}
+
 module.exports = {
   isPlaying,
   isPaused,
@@ -122,7 +134,10 @@ module.exports = {
   getCoverUrl,
   getAlbumName,
   getLikeStatus,
+  getFullState,
   setSeekbarPosition,
   setVolume,
-  getFullState,
+  playPause,
+  prevTrack,
+  nextTrack,
 };
