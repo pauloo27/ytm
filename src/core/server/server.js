@@ -16,6 +16,7 @@ function start() {
 
   const server = app.listen(port);
   handleWSUpgrade(server, wss);
+  return { server, wss };
 }
 
 module.exports = {

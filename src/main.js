@@ -5,7 +5,11 @@ const server = require('./core/server/server');
 
 const modules = listModules();
 
-server.start();
+const { wss } = server.start();
+
+wss.on('connection', (socket) => {
+  modules.forEach((m) => !m.postLoad || m.postLoad(socket));
+});
 
 modules.forEach((m) => !m.preLoad || m.preLoad());
 
