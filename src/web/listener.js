@@ -34,8 +34,8 @@ function newContentObserver(cb, element) {
 }
 
 function handleIsPaused(cb) {
-  document.querySelector('video').onpause = cb('isPaused', true);
-  document.querySelector('video').onplay = cb('isPaused', false);
+  document.querySelector('video').addEventListener('pause', () => cb('isPaused', true));
+  document.querySelector('video').addEventListener('play', () => cb('isPaused', false));
 }
 
 function handleIsVideo(cb) {
