@@ -4,8 +4,8 @@ const EventEmitter = require('events');
 const events = new EventEmitter();
 
 function newAttributeObserver(cb, element, attributeName) {
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach(cb);
+  const observer = new MutationObserver((e) => {
+    e.forEach(cb);
   });
 
   observer.observe(
@@ -20,8 +20,8 @@ function newAttributeObserver(cb, element, attributeName) {
 }
 
 function newContentObserver(cb, element) {
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach(cb);
+  const observer = new MutationObserver((e) => {
+    e.forEach(cb);
   });
 
   observer.observe(
@@ -40,30 +40,32 @@ function handleIsPaused(cb) {
 
 function handleIsVideo(cb) {
   newAttributeObserver(
-    (mutation) => cb('isVideo', mutation.oldValue === null),
+    (e) => cb('isVideo', e.oldValue === null),
     document.querySelector('#player'),
     'video-mode_',
   );
 }
 
 function handleVolume(cb) {
-  document.querySelector('#volume-slider').addEventListener('change', (e) => {
-    cb('volume', Number.parseInt(e.target.getAttribute('value'), 10));
-  });
+  newAttributeObserver(
+    (e) => cb('volume', Number.parseInt(e.target.getAttribute('value'), 10)),
+    document.querySelector('#volume-slider'),
+    'value',
+  );
 }
 
 function handleTitle(cb) {
   newContentObserver(
-    (mutation) => cb('title', mutation.target.textContent),
+    (e) => cb('title', e.target.textContent),
     document.querySelector('.title.ytmusic-player-bar'),
   );
 }
 
 function handleDuration(cb) {
   newAttributeObserver(
-    (mutation) => {
-      const newValue = mutation.target.getAttribute('aria-valuemax');
-      if (newValue !== mutation.oldValue) {
+    (e) => {
+      const newValue = e.target.getAttribute('aria-valuemax');
+      if (newValue !== e.oldValue) {
         cb('duration', Number.parseInt(newValue, 10));
       }
     },
@@ -74,9 +76,9 @@ function handleDuration(cb) {
 
 function handlePosition(cb) {
   newAttributeObserver(
-    (mutation) => {
-      const newValue = mutation.target.getAttribute('aria-valuenow');
-      if (newValue !== mutation.oldValue) {
+    (e) => {
+      const newValue = e.target.getAttribute('aria-valuenow');
+      if (newValue !== e.oldValue) {
         cb('position', Number.parseInt(newValue, 10));
       }
     },
@@ -87,7 +89,7 @@ function handlePosition(cb) {
 
 function handleLikeStatus(cb) {
   newAttributeObserver(
-    (mutation) => cb('likeStatus', mutation.target.getAttribute('like-status')),
+    (e) => cb('likeStatus', e.target.getAttribute('like-status')),
     document.querySelector('#like-button-renderer'),
     'like-status',
   );
@@ -95,7 +97,7 @@ function handleLikeStatus(cb) {
 
 function handleLoopType(cb) {
   newAttributeObserver(
-    (mutation) => cb('loopType', mutation.target.getAttribute('repeat-mode_')),
+    (e) => cb('loopType', e.target.getAttribute('repeat-mode_')),
     document.querySelector('ytmusic-player-bar'),
     'repeat-mode_',
   );
@@ -103,9 +105,9 @@ function handleLoopType(cb) {
 
 function handleUrl(cb) {
   newAttributeObserver(
-    (mutation) => {
-      const newValue = mutation.target.getAttribute('href');
-      if (newValue !== mutation.oldValue) {
+    (e) => {
+      const newValue = e.target.getAttribute('href');
+      if (newValue !== e.oldValue) {
         cb('url', newValue);
       }
     },
