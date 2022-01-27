@@ -7,6 +7,8 @@ const modules = listModules();
 
 server.start();
 
+modules.forEach((m) => !m.preLoad || m.preLoad());
+
 function createWindow() {
   const win = new BrowserWindow({
     // TODO find out whats the cool resolution with the cool kids
@@ -31,7 +33,7 @@ function createWindow() {
   });
   win.setMenuBarVisibility(false);
   win.loadURL('https://music.youtube.com');
-  modules.forEach(async (m) => m.load(win));
+  modules.forEach((m) => !m.load || m.load(win));
 }
 
 app.whenReady().then(() => {

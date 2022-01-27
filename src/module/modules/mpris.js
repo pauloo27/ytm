@@ -2,6 +2,10 @@ const Player = require('mpris-service');
 const { app } = require('electron');
 const State = require('../../core/state/state');
 
+function preLoad() {
+  app.commandLine.appendSwitch('disable-features', 'MediaSessionService');
+}
+
 function load() {
   if (process.platform !== 'linux') {
     return;
@@ -36,5 +40,6 @@ function load() {
 
 module.exports = {
   name: 'MPRIS',
+  preLoad,
   load,
 };
