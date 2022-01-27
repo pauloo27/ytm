@@ -39,34 +39,29 @@ function getLoopType() {
 }
 
 function getCoverUrl() {
-  const thumbnail = document.querySelector('.thumbnail.ytmusic-player.no-transition');
-  const image = thumbnail.querySelector('.yt-img-shadow').src;
+  const coverUrl = document.querySelector('.thumbnail.ytmusic-player.no-transition>.yt-img-shadow').src;
 
-  if (image.includes('data:image')) return document.querySelector('.image.ytmusic-player-bar').src;
+  if (!coverUrl.includes('data:image')) return coverUrl;
 
-  return image;
+  // for videos, the cover is a base64, so we get from a different element
+
+  const thumbnail = document.querySelector('.image.ytmusic-player-bar').src;
+  // for some reason, thats the value on start up
+  if (thumbnail === 'https://music.youtube.com/') return undefined;
+  return thumbnail;
 }
 
 function getAlbumName() {
-  if (!isPlaying()) return undefined;
-  const playerBar = document.getElementsByClassName('byline ytmusic-player-bar')[0].children;
-  const playerBarArr = Array.from(playerBar);
-
-  const d = playerBarArr.find((data) => data.hasAttribute('href') && data.getAttribute('href').includes('browse'));
-  return d.innerText;
+  const strings = document.querySelectorAll(
+    '.subtitle.ytmusic-player-bar>yt-formatted-string>.yt-formatted-string',
+  );
+  return strings[strings.length - 3]?.textContent;
 }
 
 function getAuthor() {
-  const bar = document.getElementsByClassName('subtitle ytmusic-player-bar')[0];
-
-  if (bar.getElementsByClassName('yt-simple-endpoint yt-formatted-string')[0]) {
-    return bar.getElementsByClassName('yt-simple-endpoint yt-formatted-string')[0].textContent;
-  }
-
-  if (bar.getElementsByClassName('byline ytmusic-player-bar')[0]) {
-    return bar.getElementsByClassName('byline ytmusic-player-bar')[0].textContent;
-  }
-  return undefined;
+  return document.querySelectorAll(
+    '.subtitle.ytmusic-player-bar>yt-formatted-string>.yt-formatted-string',
+  )[0]?.textContent;
 }
 
 // TODO: enum?

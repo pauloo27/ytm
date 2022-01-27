@@ -2,7 +2,6 @@
 const EventEmitter = require('events');
 
 const events = new EventEmitter();
-let Controller;
 
 function newAttributeObserver(cb, element, attributeName) {
   const observer = new MutationObserver((mutations) => {
@@ -17,6 +16,7 @@ function newAttributeObserver(cb, element, attributeName) {
       attributeFilter: attributeName ? [attributeName] : undefined,
     },
   );
+  return observer;
 }
 
 function newContentObserver(cb, element) {
@@ -30,6 +30,7 @@ function newContentObserver(cb, element) {
       childList: true,
     },
   );
+  return observer;
 }
 
 function handleIsPaused(cb) {
@@ -113,24 +114,46 @@ function handleUrl(cb) {
   );
 }
 
-// FIXME: since some stuff are harded to listen, we listen to the URL
-// change instead... Kinda bad, but works =).
 function handleAuthor(cb) {
-  events.on('title', () => {
-    cb('author', Controller.getAuthor());
-  });
-}
+  const getAuthorElem = () => document.querySelectorAll(
+    '.subtitle.ytmusic-player-bar>yt-formatted-string>.yt-formatted-string',
+  )[0];
 
-function handleCoverUrl(cb) {
-  events.on('title', () => {
-    cb('coverUrl', Controller.getCover());
-  });
+  const container = document.querySelector('.subtitle.ytmusic-player-bar');
+  newContentObserver(() => {
+    const elem = getAuthorElem();
+    if (elem === undefined) return;
+    cb('author', elem.textContent);
+  }, container);
 }
 
 function handleAlbumName(cb) {
-  events.on('title', () => {
-    cb('albumName', Controller.getAlbumName());
-  });
+  const getAlbumNameElement = () => {
+    const strings = document.querySelectorAll(
+      '.subtitle.ytmusic-player-bar>yt-formatted-string>.yt-formatted-string',
+    );
+    return strings[strings.length - 3];
+  };
+
+  const container = document.querySelector('.subtitle.ytmusic-player-bar');
+  newContentObserver(() => {
+    const elem = getAlbumNameElement();
+    if (elem === undefined) return;
+    cb('albumName', elem.textContent);
+  }, container);
+}
+
+let Controller;
+
+function handleCoverUrl(cb) {
+  newAttributeObserver(
+    () => {
+      if (!Controller) Controller = require('./controller');
+      cb('coverUrl', Controller.getCoverUrl());
+    },
+    document.querySelector('.image.ytmusic-player-bar'),
+    'src',
+  );
 }
 
 function listenToChanges() {
@@ -138,7 +161,6 @@ function listenToChanges() {
     events.emit(key, newValue);
     events.emit('all', { key, value: newValue }); // FIXME?
   };
-  Controller = require('./controller');
   // handleIsPlaying(cb);
   handleIsPaused(cb);
   handleIsVideo(cb);

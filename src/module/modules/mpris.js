@@ -17,7 +17,6 @@ function load() {
   player.getPosition = () => State.getFromState('position');
 
   const updatePlayer = (state) => {
-    console.log('update player state', state)
     player.volume = state.volume / 100;
     player.playbackStatus = state.isPaused
       ? Player.PLAYBACK_STATUS_PAUSED : Player.PLAYBACK_STATUS_PLAYING;
