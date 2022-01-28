@@ -4,6 +4,6 @@
   "AskFilesToCommit": false,
   "PreCommit": null,
   "PostCommit": null,
-  "Modules": ["mpris", "core", "ctrl"],
+  "Modules": ["mpris", "core", "ctrl", "tray"],
   "AskCISkip": false
 }
