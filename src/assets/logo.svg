@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="25px"
+   height="25px"
+   viewBox="0 0 25 25"
+   version="1.1"
+   id="SVGRoot"
+   sodipodi:docname="logo.svg"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview2976"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:zoom="9.8065095"
+     inkscape:cx="28.705423"
+     inkscape:cy="16.468653"
+     inkscape:window-width="1346"
+     inkscape:window-height="723"
+     inkscape:window-x="1610"
+     inkscape:window-y="10"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2971" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g2429"
+       transform="translate(0.31999969,0.5)">
+      <ellipse
+         cx="12.18"
+         cy="12"
+         rx="12.18"
+         ry="12"
+         fill="#ff0000"
+         id="ellipse1060" />
+      <ellipse
+         cx="12.18"
+         cy="12"
+         rx="7.3080001"
+         ry="7.1999998"
+         fill="#ff0000"
+         stroke="#ffffff"
+         stroke-width="1.2"
+         id="ellipse1062" />
+      <path
+         d="M 9.744,15.545 16.071,12.001 9.744,8.455 Z"
+         fill="#ffffff"
+         id="path1064"
+         sodipodi:nodetypes="cccc" />
+    </g>
+  </g>
+</svg>
