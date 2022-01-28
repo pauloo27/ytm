@@ -1,0 +1,9 @@
+{
+  "Version": "0.0.2-dev",
+  "PrefixPack": "text",
+  "AskFilesToCommit": false,
+  "PreCommit": null,
+  "PostCommit": null,
+  "Modules": ["mpris", "core", "ctrl"],
+  "AskCISkip": false
+}
