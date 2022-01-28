@@ -28,6 +28,11 @@ function postLoad(socket) {
   player.on('next', () => socket.sendCommand('next-track'));
   player.on('previous', () => socket.sendCommand('prev-track'));
 
+  player.on('volume', (vol) => socket.sendCommand('set-volume', Math.floor(vol * 100)));
+
+  player.on('position', (args) => socket.sendCommand('set-position', Math.floor(args.position / 1000000)));
+  player.on('seek', (offset) => socket.sendCommand('set-position', Math.floor((player.getPosition() + offset) / 1000000)));
+
   const updatePlayer = (state) => {
     player.volume = state.volume / 100;
     player.playbackStatus = state.isPaused

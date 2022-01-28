@@ -46,7 +46,6 @@ function getLoopType() {
 
 function getCoverUrl() {
   const coverUrl = document.querySelector('.thumbnail.ytmusic-player.no-transition>.yt-img-shadow').src;
-
   if (!coverUrl.includes('data:image')) return coverUrl;
 
   // for videos, the cover is a base64, so we get from a different element
@@ -78,11 +77,11 @@ function getLikeStatus() {
 // Setters
 function setVolume(vol) {
   const slider = document.querySelector('#volume-slider');
-  slider.setAttribute('value', vol);
+  slider.setAttribute('value', vol.toString());
   slider.dispatchEvent(new Event('change'));
 }
 
-function setSeekbarPosition(positionInSeconds) {
+function setPosition(positionInSeconds) {
   const slider = document.querySelectorAll('.bar-container .tp-yt-paper-slider')[2];
   const sliderKnob = document.querySelectorAll('#progress-bar')[0];
   slider.click();
@@ -141,7 +140,7 @@ module.exports = {
   getAlbumName,
   getLikeStatus,
   getFullState,
-  setSeekbarPosition,
+  setPosition,
   setVolume,
   playPause,
   prevTrack,
