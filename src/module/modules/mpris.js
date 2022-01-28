@@ -21,8 +21,14 @@ function postLoad(socket) {
 
   player.getPosition = () => State.getFromState('position') * 1000000;
 
-  player.on('play', () => socket.sendCommand('play-pause'));
-  player.on('pause', () => socket.sendCommand('play-pause'));
+  player.on('play', () => {
+    if (!State.getFromState('isPaused')) return;
+    socket.sendCommand('play-pause');
+  });
+  player.on('pause', () => {
+    if (State.getFromState('isPaused')) return;
+    socket.sendCommand('play-pause');
+  });
   player.on('playpause', () => socket.sendCommand('play-pause'));
 
   player.on('next', () => socket.sendCommand('next-track'));
