@@ -1,5 +1,11 @@
 const { listenToChanges } = require('./listener');
 
+/*
+ Code heavly based on (aka stolen from):
+ https://github.com/ytmdesktop/ytmdesktop/blob/00aebea1caf4e48b0658e9571d4331c2b388ba30/src/providers/infoPlayerProvider.js
+ https://github.com/ytmdesktop/ytmdesktop/blob/00aebea1caf4e48b0658e9571d4331c2b388ba30/src/providers/mediaProvider.js
+*/
+
 // Getters
 function isPlaying() {
   return document.querySelector('.byline.ytmusic-player-bar') !== null;
