@@ -116,6 +116,14 @@ function handleUrl(cb) {
   );
 }
 
+function handleIsPlaying(cb) {
+  const container = document.querySelector('.subtitle.ytmusic-player-bar');
+  const observer = newContentObserver(() => {
+    cb('isPlaying', true);
+    observer.disconnect();
+  }, container);
+}
+
 function handleAuthor(cb) {
   const getAuthorElem = () => document.querySelectorAll(
     '.subtitle.ytmusic-player-bar>yt-formatted-string>.yt-formatted-string',
@@ -163,7 +171,7 @@ function listenToChanges() {
     events.emit(key, newValue);
     events.emit('all', { key, value: newValue }); // FIXME?
   };
-  // handleIsPlaying(cb);
+  handleIsPlaying(cb);
   handleIsPaused(cb);
   handleIsVideo(cb);
   handleVolume(cb);
