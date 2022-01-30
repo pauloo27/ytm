@@ -1,4 +1,4 @@
-# YTMD
+# YTM
 
 Just another Unofficial YouTube Music Desktop made with Electron, but with 
 way less features.
@@ -12,6 +12,8 @@ Most of the code here is based on ytmdesktop.
 
 - Custom CSS support
 - MPRIS integration
+- Tray icon
+- Discord integration
 - YouTube Music
 
 ## License

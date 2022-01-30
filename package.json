@@ -12,6 +12,7 @@
   "author": "not google",
   "license": "MIT",
   "dependencies": {
+    "discord-rpc": "^4.0.1",
     "electron": "^16.0.7",
     "express": "^4.17.2",
     "mpris-service": "^2.1.2",
