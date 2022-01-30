@@ -1,6 +1,6 @@
 const { Server } = require('ws');
 const { sendCommand } = require('../../common/ws');
-const { isStateInitialized, initState, updateState } = require('../state/state');
+const { isStateInitialized, initState, updateState } = require('../state');
 
 function handleCommand(socket, rawData) {
   const data = JSON.parse(rawData);

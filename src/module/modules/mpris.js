@@ -1,6 +1,6 @@
 const Player = require('mpris-service');
 const { app } = require('electron');
-const State = require('../../core/state/state');
+const State = require('../../core/state');
 
 function preLoad() {
   app.commandLine.appendSwitch('disable-features', 'MediaSessionService');
