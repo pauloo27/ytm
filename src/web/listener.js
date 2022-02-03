@@ -124,33 +124,44 @@ function handleIsPlaying(cb) {
   }, container);
 }
 
-function handleAuthor(cb) {
-  const getAuthorElem = () => document.querySelectorAll(
-    '.subtitle.ytmusic-player-bar>yt-formatted-string>.yt-formatted-string',
-  )[0];
-
+function handlePlayerBarItem(cb, getElem, name) {
   const container = document.querySelector('.subtitle.ytmusic-player-bar');
+  let observer;
+
   newContentObserver(() => {
-    const elem = getAuthorElem();
+    const elem = getElem();
     if (elem === undefined) return;
-    cb('author', elem.textContent);
+    if (observer) observer.disconnect();
+    cb(name, elem.textContent);
+
+    observer = newContentObserver(
+      () => cb(name, elem.textContent),
+      elem,
+    );
   }, container);
 }
 
-function handleAlbumName(cb) {
-  const getAlbumNameElement = () => {
-    const strings = document.querySelectorAll(
+function handleAuthor(cb) {
+  handlePlayerBarItem(
+    cb,
+    () => document.querySelectorAll(
       '.subtitle.ytmusic-player-bar>yt-formatted-string>.yt-formatted-string',
-    );
-    return strings[strings.length - 3];
-  };
+    )[0],
+    'author',
+  );
+}
 
-  const container = document.querySelector('.subtitle.ytmusic-player-bar');
-  newContentObserver(() => {
-    const elem = getAlbumNameElement();
-    if (elem === undefined) return;
-    cb('albumName', elem.textContent);
-  }, container);
+function handleAlbumName(cb) {
+  handlePlayerBarItem(
+    cb,
+    () => {
+      const strings = document.querySelectorAll(
+        '.subtitle.ytmusic-player-bar>yt-formatted-string>.yt-formatted-string',
+      );
+      return strings[strings.length - 3];
+    },
+    'albumName',
+  );
 }
 
 let Controller;
