@@ -5,6 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
+    "build:lin": "electron-builder --linux",
     "lint": "eslint \"{src,apps,libs,test}/**/*.js\"",
     "lint:fix": "eslint --fix \"{src,apps,libs,test}/**/*.js\""
   },
@@ -13,15 +14,20 @@
   "license": "MIT",
   "dependencies": {
     "discord-rpc": "^4.0.1",
-    "electron": "^16.0.7",
     "express": "^4.17.2",
     "mpris-service": "^2.1.2",
     "ws": "^8.4.2"
   },
   "devDependencies": {
     "electron": "^16.0.7",
+    "electron-builder": "^23.6.0",
     "eslint": "^8.7.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.4"
+  },
+  "build": {
+    "linux": {
+      "target": "dir"
+    }
   }
 }
