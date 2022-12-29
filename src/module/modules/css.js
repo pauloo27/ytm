@@ -7,7 +7,9 @@ function load(win) {
   const cssFile = path.join(appFolder, app.getName(), 'etc', 'style.css');
   if (!fs.existsSync(cssFile)) return;
   const css = fs.readFileSync(cssFile).toString();
-  win.webContents.insertCSS(css);
+  win.webContents.once('dom-ready', () => {
+    win.webContents.insertCSS(css);
+  });
 }
 
 module.exports = {
