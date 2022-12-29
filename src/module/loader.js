@@ -1,17 +1,10 @@
-/* eslint-disable global-require */
-/* eslint-disable import/no-dynamic-require */
-const fs = require('fs');
+const cssModule = require('./modules/css');
+const discordModule = require('./modules/discord');
+const mprisModule = require('./modules/mpris');
+const trayModule = require('./modules/tray');
 
 function listModules() {
-  const modules = [];
-  fs.readdirSync('./src/module/modules').forEach((file) => {
-    if (!file.endsWith('.js')) {
-      return;
-    }
-    const module = require(`./modules/${file}`);
-    modules.push(module);
-  });
-  return modules;
+  return [cssModule, discordModule, mprisModule, trayModule];
 }
 
 module.exports = {
