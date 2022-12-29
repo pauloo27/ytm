@@ -11,6 +11,7 @@ module.exports = {
     ecmaVersion: 'latest',
   },
   rules: {
+    'import/no-extraneous-dependencies': 'off',
     'class-methods-use-this': 'off',
     quotes: [
       'error',
