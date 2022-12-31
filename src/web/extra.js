@@ -16,6 +16,7 @@ function appendGoBack() {
     window.history.back();
   };
   const container = document.querySelector('.left-content');
+  container.style = 'display: flex; align-items: center;';
   container.insertBefore(goBackBtn, container.firstChild);
 }
 
