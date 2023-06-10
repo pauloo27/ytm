@@ -1,5 +1,8 @@
 const { Tray, Menu } = require('electron');
+const { app } = require('electron');
 const path = require('path');
+
+let isAppQuitting = false;
 
 function onToggleVisibility(win) {
   if (win.isVisible()) win.hide();
@@ -13,6 +16,17 @@ function load(win) {
     { label: 'Quit', type: 'normal', role: 'quit' },
   ]);
   tray.setContextMenu(menu);
+
+  app.on('before-quit', () => {
+    isAppQuitting = true;
+    tray.destroy();
+  });
+
+  win.on('close', (e) => {
+    if (isAppQuitting) return;
+    e.preventDefault();
+    win.hide();
+  });
 }
 
 module.exports = {
