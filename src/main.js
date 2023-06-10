@@ -1,17 +1,15 @@
 const path = require('path');
 const { app, BrowserWindow } = require('electron');
-const { listModules } = require('./module/loader');
+const { modulesList } = require('./module/loader');
 const server = require('./core/server/server');
-
-const modules = listModules();
 
 const { wss } = server.start();
 
 wss.on('connection', (socket) => {
-  modules.forEach((m) => !m.postLoad || m.postLoad(socket));
+  modulesList.forEach((m) => !m.postLoad || m.postLoad(socket));
 });
 
-modules.forEach((m) => !m.preLoad || m.preLoad());
+modulesList.forEach((m) => !m.preLoad || m.preLoad());
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -37,7 +35,7 @@ function createWindow() {
   });
   win.setMenuBarVisibility(false);
   win.loadURL('https://music.youtube.com');
-  modules.forEach((m) => !m.load || m.load(win));
+  modulesList.forEach((m) => !m.load || m.load(win));
 }
 
 app.whenReady().then(() => {
