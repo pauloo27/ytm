@@ -2,6 +2,12 @@ const Player = require('mpris-service');
 const { app } = require('electron');
 const State = require('../../core/state');
 
+let mainWindow;
+
+function load(win) {
+  mainWindow = win;
+}
+
 function preLoad() {
   app.commandLine.appendSwitch('disable-features', 'MediaSessionService');
 }
@@ -16,7 +22,7 @@ function postLoad(socket) {
     supportedUriSchemes: ['file'],
     supportedMimeTypes: ['audio/mpeg', 'application/ogg'],
     supportedInterfaces: ['player'],
-    // canRaise: true, TODO
+    canRaise: true,
   });
 
   player.getPosition = () => State.getFromState('position') * 1000000;
@@ -38,6 +44,11 @@ function postLoad(socket) {
 
   player.on('position', (args) => socket.sendCommand('set-position', Math.floor(args.position / 1000000)));
   player.on('seek', (offset) => socket.sendCommand('set-position', Math.floor((player.getPosition() + offset) / 1000000)));
+
+  player.on('raise', () => {
+    if (mainWindow && !mainWindow.isVisible()) { mainWindow.show(); }
+    mainWindow.focus();
+  });
 
   const updatePlayer = (state) => {
     player.volume = state.volume / 100;
@@ -61,4 +72,5 @@ module.exports = {
   name: 'MPRIS',
   preLoad,
   postLoad,
+  load,
 };
