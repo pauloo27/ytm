@@ -3,14 +3,6 @@ const { app, BrowserWindow } = require('electron');
 const { modulesList } = require('./module/loader');
 const server = require('./core/server/server');
 
-const { wss } = server.start();
-
-wss.on('connection', (socket) => {
-  modulesList.forEach((m) => !m.postLoad || m.postLoad(socket));
-});
-
-modulesList.forEach((m) => !m.preLoad || m.preLoad());
-
 function createWindow() {
   const win = new BrowserWindow({
     // TODO find out whats the cool resolution with the cool kids
@@ -36,20 +28,45 @@ function createWindow() {
   win.setMenuBarVisibility(false);
   win.loadURL('https://music.youtube.com');
   modulesList.forEach((m) => !m.load || m.load(win));
+  return win;
 }
 
-app.whenReady().then(() => {
-  createWindow();
+function main() {
+  const gotTheLock = app.requestSingleInstanceLock();
+  if (!gotTheLock) {
+    app.quit();
+    return;
+  }
 
-  // someshit with macos lol
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
-    }
+  const { wss } = server.start();
+
+  wss.on('connection', (socket) => {
+    modulesList.forEach((m) => !m.postLoad || m.postLoad(socket));
   });
-});
 
-app.on('window-all-closed', () => {
-  if (process.platform === 'darwin') return;
-  app.quit();
-});
+  modulesList.forEach((m) => !m.preLoad || m.preLoad());
+
+  app.whenReady().then(() => {
+    const win = createWindow();
+
+    // someshit with macos lol
+    app.on('activate', () => {
+      if (BrowserWindow.getAllWindows().length === 0) {
+        createWindow();
+      }
+    });
+
+    app.on('second-instance', () => {
+      if (!win) return;
+      if (!win.isVisible()) win.show();
+      if (win.isMinimized()) win.restore();
+    });
+  });
+
+  app.on('window-all-closed', () => {
+    if (process.platform === 'darwin') return;
+    app.quit();
+  });
+}
+
+main();
