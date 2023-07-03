@@ -21,7 +21,7 @@ function createWindow() {
     webPreferences: {
       // some nice options =)
       webSecurity: true,
-      nodeIntegration: false,
+      nodeIntegration: true,
       allowRunningInsecureContent: false,
       contextIsolation: true,
 
