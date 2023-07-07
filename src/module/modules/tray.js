@@ -17,6 +17,8 @@ function load(win) {
   ]);
   tray.setContextMenu(menu);
 
+  tray.on('click', () => onToggleVisibility(win, tray));
+
   app.on('before-quit', () => {
     isAppQuitting = true;
     tray.destroy();
