@@ -16,9 +16,16 @@ So I made this, with only the features I needed (login and tray). As a bonus,
 ## Features
 
 - YouTube Music: everything that youtube music has
+
 - Tray icon: hide the window to the system tray
+
 - Discord integration: let your internet friends know what you listening to
+
 - MPRIS integration: if you use Linux, enjoy a sweet and complete MPRIS integration
+
+- Node Integration Off: for security reasons, the code of the web page is not 
+allowed to access the Node.js API and vice versa. A web socket is used to communicate between the two processes.
+
 - Custom CSS support: you can make it match your style! Just place a css file inside `~/.config/ytm/etc/style.css`; 
 
 ## License
