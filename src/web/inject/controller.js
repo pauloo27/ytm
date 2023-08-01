@@ -1,5 +1,3 @@
-const { listenToChanges } = require('./listener');
-
 /*
  Code heavly based on (aka stolen from):
  https://github.com/ytmdesktop/ytmdesktop/blob/00aebea1caf4e48b0658e9571d4331c2b388ba30/src/providers/infoPlayerProvider.js
@@ -88,8 +86,6 @@ function setPosition(positionInSeconds) {
   sliderKnob.setAttribute('value', positionInSeconds);
 }
 
-let listening = false;
-
 function getFullState() {
   const state = {
     isPlaying: isPlaying(),
@@ -106,10 +102,6 @@ function getFullState() {
     albumName: getAlbumName(),
     likeStatus: getLikeStatus(),
   };
-  if (!listening) {
-    listenToChanges();
-    listening = true;
-  }
   return state;
 }
 
@@ -125,7 +117,9 @@ function nextTrack() {
   document.dispatchEvent(new KeyboardEvent('keydown', { key: 'j' }));
 }
 
-module.exports = {
+if (!window.ytm) window.ytm = {};
+
+window.ytm.controller = {
   isPlaying,
   isPaused,
   isVideo,

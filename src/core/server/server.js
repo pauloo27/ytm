@@ -3,7 +3,7 @@ const { cors } = require('./cors');
 const { route } = require('./route');
 const { startWS, handleWSUpgrade } = require('./ws');
 
-const port = 4200;
+const serverPort = 4200;
 
 function start() {
   const app = express();
@@ -14,12 +14,11 @@ function start() {
 
   route(app);
 
-  const server = app.listen(port);
+  const server = app.listen(serverPort);
   handleWSUpgrade(server, wss);
   return { server, wss };
 }
 
 module.exports = {
   start,
-  port,
 };

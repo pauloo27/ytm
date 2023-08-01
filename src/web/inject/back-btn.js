@@ -20,10 +20,4 @@ function appendGoBack() {
   container.insertBefore(goBackBtn, container.firstChild);
 }
 
-function loadExtras() {
-  appendGoBack();
-}
-
-module.exports = {
-  loadExtras,
-};
+appendGoBack();

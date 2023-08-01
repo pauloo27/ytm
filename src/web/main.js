@@ -1,19 +1,15 @@
-const ws = require('./ws');
-const Listener = require('./listener');
-const { loadExtras } = require('./extra');
+const serverPort = 4200;
 
-const socket = ws.connect();
+function inject(name) {
+  const script = document.createElement('script');
+  script.src = `http://localhost:${serverPort}/web/${name}.js`;
+  (document.head || document.documentElement).appendChild(script);
+}
 
 window.addEventListener('DOMContentLoaded', () => {
-  let interval;
-  const checkIfReady = () => {
-    if (!document.querySelector('video')) return;
-    loadExtras();
-    socket.sendCommand('i-am-ready');
-    clearInterval(interval);
-    Listener.events.on('all', ({ key, value }) => {
-      socket.sendCommand('update-state', { [key]: value });
-    });
-  };
-  interval = setInterval(checkIfReady, 100);
+  inject('controller');
+  inject('listener');
+  inject('ws');
+
+  inject('back-btn');
 });

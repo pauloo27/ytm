@@ -1,5 +1,25 @@
 /* eslint-disable global-require */
-const EventEmitter = require('events');
+class EventEmitter {
+  constructor() {
+    this.events = {};
+  }
+
+  on(eventName, listener) {
+    if (!this.events[eventName]) {
+      this.events[eventName] = [];
+    }
+    this.events[eventName].push(listener);
+  }
+
+  emit(eventName, ...args) {
+    const listeners = this.events[eventName];
+    if (!listeners) return;
+
+    for (let i = 0; i < listeners.length; i += 1) {
+      listeners[i](...args);
+    }
+  }
+}
 
 const events = new EventEmitter();
 
@@ -164,13 +184,10 @@ function handleAlbumName(cb) {
   );
 }
 
-let Controller;
-
 function handleCoverUrl(cb) {
   newAttributeObserver(
     () => {
-      if (!Controller) Controller = require('./controller');
-      cb('coverUrl', Controller.getCoverUrl());
+      cb('coverUrl', window.ytm.controller.getCoverUrl());
     },
     document.querySelector('.image.ytmusic-player-bar'),
     'src',
@@ -180,7 +197,7 @@ function handleCoverUrl(cb) {
 function listenToChanges() {
   const cb = (key, newValue) => {
     events.emit(key, newValue);
-    events.emit('all', { key, value: newValue }); // FIXME?
+    events.emit('all', { key, value: newValue });
   };
   handleIsPlaying(cb);
   handleIsPaused(cb);
@@ -197,7 +214,7 @@ function listenToChanges() {
   handleLikeStatus(cb);
 }
 
-module.exports = {
-  events,
-  listenToChanges,
-};
+if (!window.ytm) window.ytm = {};
+
+window.ytm.events = events;
+window.ytm.listenToChanges = listenToChanges;
