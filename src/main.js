@@ -16,6 +16,7 @@ function createWindow() {
       nodeIntegration: false,
       allowRunningInsecureContent: false,
       contextIsolation: true,
+      enableRemoteModule: false,
 
       // preload the main script file, which loads all the rest
       preload: path.join(__dirname, 'web', 'main.js'),
